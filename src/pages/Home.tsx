@@ -1,3 +1,5 @@
+import { useHistory } from 'react-router-dom';
+
 import ilustrationImg from '../assets/images/illustration.svg';
 import logoImg from '../assets/images/logo.svg';
 import googleImg from '../assets/images/google-icon.svg';
@@ -6,6 +8,13 @@ import { Button } from '../components/Buttons';
 import '../styles/auth.scss';
 
 export function Home() {
+    const history = useHistory();
+
+    function navigateToNewRoom() {
+        history.push('/rooms/new');
+    }
+
+
     return(
         <div id="page-auth">
             <aside>
@@ -16,7 +25,7 @@ export function Home() {
             <main>
                 <div className="main-content">
                     <img src={logoImg} alt="Letmeask" />
-                    <button className="create-room">
+                    <button onClick={navigateToNewRoom} className="create-room">
                         <img src={googleImg} alt="Logo do Google" />
                         Crie sua sala com o Google
                     </button>
