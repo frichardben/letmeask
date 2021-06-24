@@ -7,6 +7,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { Home } from './pages/Home';
 
 import { NewRoom } from './pages/NewRoom';
+import { useEffect } from 'react';
 
 type User = {
   id: string;
@@ -23,6 +24,24 @@ export const AuthContext = createContext({} as AuthContextType);
 
 function App() {
   const [user, setUser] = useState<User>();
+
+  useEffect(() => {
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        const {displayName, photoURL, uid} = user
+
+        if(!displayName || !photoURL) {
+          throw new Error('Missing information from Google Account.')
+        }
+
+        setUser({
+          id: uid,
+          name: displayName,
+          avatar: photoURL
+        })
+      }
+    })
+  },[])
 
   async function signInWithGoogle() {
     const provider = new firebase.auth.GoogleAuthProvider();
